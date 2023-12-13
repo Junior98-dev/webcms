@@ -20,6 +20,9 @@ if (isset($_POST['inscription'])) {
         //connexion à la base de bonnée
         require_once "includes/bdd.php";
 
+        // Criptage du mot de passe avec la fonction password_hash
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
         // Seléction tous les utilisateurs ayant le même username dans la base de donnée
         $req = $bdd->prepare('SELECT * FROM webcms.utilisateurs WHERE username = :username');
         $req->bindValue(':username', $_POST['username']);
@@ -37,8 +40,10 @@ if (isset($_POST['inscription'])) {
             $message = "Cette adresse email est déja utilisée!";
         } else {
 
-            // Inserer les données dans la base de donnée
+            //Appel de la fonction pour generer un token
+            require_once "includes/token.php";
 
+            // Inserer les données dans la base de donnée
             $requete = $bdd->prepare('INSERT INTO webcms.utilisateurs(nom_utilisateur, prenom_utilisateur, username, email_utilisateur, password_utilisateur, token_utilisateur,photo_utilisateur) VALUES(:nom, :prenom, :username, :email, :password, :token, :photo_profil)');
 
             // Faire la correspondance des parametres nommés avec les names définis dans les inputs du formulaire
@@ -47,8 +52,8 @@ if (isset($_POST['inscription'])) {
             $requete->bindvalue(':prenom', $_POST['prenom']);
             $requete->bindvalue(':username', $_POST['username']);
             $requete->bindvalue(':email', $_POST['email']);
-            $requete->bindvalue(':password', $_POST['password']);
-            $requete->bindvalue(':token', "aaaa");
+            $requete->bindvalue(':password', $password);
+            $requete->bindvalue(':token', $token);
 
             if (empty($_FILES['photo_profil']['name'])) {
                 $photo_profil = 'avatar_defaut.png';
