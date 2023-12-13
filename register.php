@@ -62,14 +62,16 @@ if (isset($_POST['inscription'])) {
 
                 // Verification du type de fichier qui sera transmit par utilisateur
                 if (preg_match("#jpeg|png|jpg#", $_FILES['photo_profil']['type'])) {
+                    $nouveau_nom_photo = $token."_".$_FILES['photo_profil']['name'];
+
                     $path = "img/photo_profil/";
                     // pour deplacer la photo de profil dans le fichier temporaire au fichier defini
-                    move_uploaded_file($_FILES['photo_profil']['tmp_name'], $path . $_FILES['photo_profil']['tmp_name']);
+                    move_uploaded_file($_FILES['photo_profil']['tmp_name'], $path.$nouveau_nom_photo);
                 } else {
                     $message = "La photo de profil doit être de type jpeg, jpg ou png";
                 }
 
-                $requete->bindvalue(':photo_profil', $_FILES['photo_profil']['name']);
+                $requete->bindvalue(':photo_profil', $nouveau_nom_photo);
             }
 
             $requete->execute();
