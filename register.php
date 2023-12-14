@@ -75,6 +75,8 @@ if (isset($_POST['inscription'])) {
             }
 
             $requete->execute();
+            // Fichier qui envoi un mail à utilisateur pour confirmer son adresse mail
+            require_once 'includes/PHPMailer/sendmail.php';
         }
     }
 }
