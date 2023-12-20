@@ -18,7 +18,7 @@ $mail->SMTPSecure = 'tls';
 $mail->Port = 587;
 $mail->CharSet = "utf-8";
 $mail->setFrom('andreakounkoud@gmail.com', 'Webcms');
-$mail->addAddress($_POST['email'], $_POST['username']);
+$mail->addAddress($_POST['email'], 'Webcms');
 $mail->isHTML(true); // Pour activer l'envoi de mail sous forme HTML
 $mail->Subject = 'Confirmation d\'email';
 $mail->Body = 'Afin de valider votre adresse email, merci de cliquer sur le lien suivant : <a href="localhost/webcms/verification.php?token=' . $token . '&email=' . $_POST['email'] . '">Confirmation email</a>';
